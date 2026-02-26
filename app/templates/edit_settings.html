@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>系统设置 - 智慧校园 APP</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: "Microsoft YaHei", sans-serif; background: #f5f5f7; }
+
+        .app-container {
+            width: 100%;
+            max-width: 420px;
+            height: 750px;
+            margin: 0 auto;
+            background: #f5f5f7;
+            overflow: hidden;
+            border: 1px solid #eee;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .top-nav {
+            height: 50px;
+            background: #004097;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .back-btn {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+        }
+        .back-icon {
+            width: 16px;
+            height: 16px;
+            border-top: 2px solid #fff;
+            border-left: 2px solid #fff;
+            transform: rotate(-45deg);
+            margin-right: 8px;
+        }
+        .nav-title { font-size: 18px; font-weight: 500; margin-left: 20px; }
+
+        .content {
+            flex: 1;
+            padding: 20px 15px;
+            overflow-y: auto;
+            scrollbar-width: none;
+        }
+        .content::-webkit-scrollbar { display: none; }
+
+        .settings-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .setting-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        .setting-item:last-child { border-bottom: none; }
+        .setting-text {
+            font-size: 14px;
+            color: #333;
+        }
+        .setting-desc {
+            font-size: 11px;
+            color: #666;
+            margin-top: 2px;
+        }
+        /* 开关样式 */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 22px;
+        }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e0e0e0;
+            transition: .4s;
+            border-radius: 22px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider { background-color: #004097; }
+        input:checked + .slider:before { transform: translateX(18px); }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: #004097;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .submit-btn:active {
+            background: #003366;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="top-nav">
+            <a href="{{ url_for('mine') }}" class="back-btn">
+                <div class="back-icon"></div>
+                返回
+            </a>
+            <div class="nav-title">系统设置</div>
+        </div>
+
+        <div class="content">
+            <form action="{{ url_for('edit_settings') }}" method="POST">
+                <div class="settings-card">
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-text">消息通知</div>
+                            <div class="setting-desc">接收课程、活动、系统通知</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" name="notifySwitch" {% if settings.notify %}checked{% endif %}>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-text">账号安全</div>
+                            <div class="setting-desc">登录验证、密码修改提醒</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" name="securitySwitch" {% if settings.security %}checked{% endif %}>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-text">自动更新</div>
+                            <div class="setting-desc">检测并安装最新版本</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" name="updateSwitch" {% if settings.update %}checked{% endif %}>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-text">深色模式</div>
+                            <div class="setting-desc">保护视力，夜间更舒适</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" name="darkModeSwitch" {% if settings.dark_mode %}checked{% endif %}>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <button type="submit" class="submit-btn">保存设置</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

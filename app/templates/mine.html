@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>我的中心 - 智慧校园 APP</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: "Microsoft YaHei", sans-serif; background: #f5f5f7; }
+
+        /* 整体容器 */
+        .app-container {
+            width: 100%;
+            max-width: 420px;
+            height: 750px;
+            margin: 0 auto;
+            background: #f5f5f7;
+            overflow: hidden;
+            border: 1px solid #eee;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 顶部导航栏 */
+        .top-nav {
+            height: 50px;
+            background: #004097;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+        .back-btn {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+        }
+        .back-icon {
+            width: 16px;
+            height: 16px;
+            border-top: 2px solid #fff;
+            border-left: 2px solid #fff;
+            transform: rotate(-45deg);
+            margin-right: 8px;
+        }
+        .nav-title { font-size: 18px; font-weight: 500; margin-left: 20px; }
+
+        /* 内容区域 */
+        .content {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            scrollbar-width: none;
+        }
+        .content::-webkit-scrollbar { display: none; }
+
+        /* 个人信息头部 */
+        .profile-header {
+            text-align: center;
+            padding: 25px 0;
+            background: linear-gradient(to bottom, #004097, #0066cc);
+            color: #fff;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid rgba(255,255,255,0.3);
+            margin: 0 auto 12px;
+            overflow: hidden;
+        }
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .user-name {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+        .user-desc {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-bottom: 4px;
+        }
+        .user-id {
+            font-size: 11px;
+            opacity: 0.8;
+        }
+
+        /* 功能列表卡片 */
+        .function-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .function-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #f5f5f5;
+            cursor: pointer;
+        }
+        .function-item:last-child { border-bottom: none; }
+        .item-left {
+            display: flex;
+            align-items: center;
+        }
+        .item-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 12px;
+        }
+        .item-text {
+            font-size: 14px;
+            color: #333;
+        }
+        .item-subtext {
+            font-size: 11px;
+            color: #666;
+            margin-top: 2px;
+        }
+        .item-arrow {
+            width: 12px;
+            height: 12px;
+            border-top: 2px solid #999;
+            border-right: 2px solid #999;
+            transform: rotate(45deg);
+        }
+
+        /* 头像上传卡片 */
+        .upload-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .card-title {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+        .card-title::after {
+            content: "";
+            width: 4px;
+            height: 16px;
+            background: #004097;
+            margin-right: 8px;
+            border-radius: 2px;
+        }
+        .upload-container {
+            text-align: center;
+            padding: 10px 0;
+        }
+        .upload-btn {
+            background: #f0f7ff;
+            color: #004097;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .upload-msg {
+            font-size: 12px;
+            color: #666;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 顶部导航栏 -->
+        <div class="top-nav">
+            <a href="{{ url_for('index') }}" class="back-btn">
+                <div class="back-icon"></div>
+                返回
+            </a>
+            <div class="nav-title">我的中心</div>
+        </div>
+
+        <!-- 内容区域 -->
+        <div class="content">
+            <!-- 个人信息头部 -->
+            <div class="profile-header">
+                <div class="avatar">
+                    <img id="avatar-img" src="{{ url_for('static', filename='登录logo.png') }}" alt="个人头像">
+                </div>
+                <div class="user-name">{{ user.name }}</div>
+                <div class="user-desc">{{ user.college }} {{ user.major }} {{ user.grade }}</div>
+                <div class="user-id">学号：{{ user.student_id }}</div>
+            </div>
+
+            <!-- 功能列表 -->
+            <div class="function-card">
+                <a href="{{ url_for('edit_info') }}" style="text-decoration: none; color: inherit;">
+                    <div class="function-item">
+                        <div class="item-left">
+                            <img src="{{ url_for('static', filename='denglu.png') }}" alt="个人信息" class="item-icon">
+                            <div>
+                                <div class="item-text">个人信息</div>
+                                <div class="item-subtext">编辑基本资料</div>
+                            </div>
+                        </div>
+                        <div class="item-arrow"></div>
+                    </div>
+                </a>
+
+                <a href="{{ url_for('edit_service') }}" style="text-decoration: none; color: inherit;">
+                    <div class="function-item">
+                        <div class="item-left">
+                            <img src="{{ url_for('static', filename='service-icon.png') }}" alt="我的服务" class="item-icon">
+                            <div>
+                                <div class="item-text">我的服务</div>
+                                <div class="item-subtext">{{ user.service_reserve }}</div>
+                            </div>
+                        </div>
+                        <div class="item-arrow"></div>
+                    </div>
+                </a>
+
+                <a href="{{ url_for('edit_settings') }}" style="text-decoration: none; color: inherit;">
+                    <div class="function-item">
+                        <div class="item-left">
+                            <img src="{{ url_for('static', filename='settings-icon.png') }}" alt="系统设置" class="item-icon">
+                            <div>
+                                <div class="item-text">系统设置</div>
+                                <div class="item-subtext">消息通知、账号安全</div>
+                            </div>
+                        </div>
+                        <div class="item-arrow"></div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- 头像上传 -->
+            <div class="upload-card">
+                <div class="card-title">头像上传</div>
+                <div class="upload-container">
+                    <input type="file" id="avatar-upload" accept="image/*" style="display: none;">
+                    <label for="avatar-upload">
+                        <button class="upload-btn">选择图片</button>
+                    </label>
+                    <div id="upload-msg" class="upload-msg">支持 JPG/PNG 格式，大小不超过 5MB</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 头像上传功能
+        document.getElementById('avatar-upload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append('avatar', file);
+
+            fetch('{{ url_for("upload_avatar") }}', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                const msgEl = document.getElementById('upload-msg');
+                if (data.status === 'success') {
+                    msgEl.style.color = '#28a745';
+                    msgEl.textContent = '上传成功！';
+                    // 刷新头像（避免缓存）
+                    document.getElementById('avatar-img').src = '{{ url_for("static", filename="avatar.png") }}?' + new Date().getTime();
+                } else {
+                    msgEl.style.color = '#dc3545';
+                    msgEl.textContent = '上传失败：' + data.msg;
+                }
+            })
+            .catch(error => {
+                document.getElementById('upload-msg').style.color = '#dc3545';
+                document.getElementById('upload-msg').textContent = '上传失败，请重试';
+                console.error(error);
+            });
+        });
+    </script>
+</body>
+</html>

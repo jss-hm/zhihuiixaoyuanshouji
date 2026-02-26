@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>编辑个人信息 - 智慧校园 APP</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: "Microsoft YaHei", sans-serif; background: #f5f5f7; }
+
+        .app-container {
+            width: 100%;
+            max-width: 420px;
+            height: 750px;
+            margin: 0 auto;
+            background: #f5f5f7;
+            overflow: hidden;
+            border: 1px solid #eee;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .top-nav {
+            height: 50px;
+            background: #004097;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .back-btn {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+        }
+        .back-icon {
+            width: 16px;
+            height: 16px;
+            border-top: 2px solid #fff;
+            border-left: 2px solid #fff;
+            transform: rotate(-45deg);
+            margin-right: 8px;
+        }
+        .nav-title { font-size: 18px; font-weight: 500; margin-left: 20px; }
+
+        .content {
+            flex: 1;
+            padding: 20px 15px;
+            overflow-y: auto;
+            scrollbar-width: none;
+        }
+        .content::-webkit-scrollbar { display: none; }
+
+        .form-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .form-item {
+            margin-bottom: 20px;
+        }
+        .form-label {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #333;
+            outline: none;
+        }
+        .form-input:focus {
+            border-color: #004097;
+            box-shadow: 0 0 0 2px rgba(0,64,151,0.1);
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: #004097;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .submit-btn:active {
+            background: #003366;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="top-nav">
+            <a href="{{ url_for('mine') }}" class="back-btn">
+                <div class="back-icon"></div>
+                返回
+            </a>
+            <div class="nav-title">编辑个人信息</div>
+        </div>
+
+        <div class="content">
+            <form action="{{ url_for('edit_info') }}" method="POST" class="form-card">
+                <div class="form-item">
+                    <label class="form-label">姓名</label>
+                    <input type="text" name="name" class="form-input" value="{{ user.name }}" required>
+                </div>
+                <div class="form-item">
+                    <label class="form-label">学号</label>
+                    <input type="text" name="student_id" class="form-input" value="{{ user.student_id }}" required>
+                </div>
+                <div class="form-item">
+                    <label class="form-label">学院</label>
+                    <input type="text" name="college" class="form-input" value="{{ user.college }}" required>
+                </div>
+                <div class="form-item">
+                    <label class="form-label">专业</label>
+                    <input type="text" name="major" class="form-input" value="{{ user.major }}" required>
+                </div>
+                <div class="form-item">
+                    <label class="form-label">联系电话</label>
+                    <input type="tel" name="phone" class="form-input" value="{{ user.phone }}" required>
+                </div>
+                <button type="submit" class="submit-btn">保存修改</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
