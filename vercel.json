@@ -2,23 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "web_app.py",  // 重点：改成你实际的入口文件名（比如 web_app.py）
-      "use": "@vercel/python@3.10",
-      "config": {
-        "runtime": "python3.10",
-        "maxLambdaSize": "15mb"
-      }
+      "src": "web_app.py",
+      "use": "@vercel/python"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "web_app.py"  // 和上面的入口文件路径完全一致
+      "dest": "web_app.py"
     }
-  ],
-  "env": {
-    "FLASK_APP": "web_app.py",  // 入口文件名
-    "FLASK_ENV": "production",
-    "PYTHONPATH": "."
-  }
+  ]
 }
